@@ -1,24 +1,23 @@
-const axios = require("axios");
+const axios = require('axios');
 
-const BASE_URL = "https://api.github.com";
+const headers = process.env.GITHUB_TOKEN
+  ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }
+  : {};
 
-async function fetchGitHubProfile(username) {
-  const headers = {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-    "User-Agent": "ai-task-manager-pro",
-    Accept: "application/vnd.github+json",
-  };
-
-  const user = await axios.get(`${BASE_URL}/users/${username}`, { headers });
-  const repos = await axios.get(
-    `${BASE_URL}/users/${username}/repos?per_page=100`,
+async function getProfile(username) {
+  const { data } = await axios.get(
+    `https://api.github.com/users/${username}`,
     { headers }
   );
-
-  return {
-    profile: user.data,
-    repos: repos.data,
-  };
+  return data;
 }
 
-module.exports = { fetchGitHubProfile };
+async function getRepos(username) {
+  const { data } = await axios.get(
+    `https://api.github.com/users/${username}/repos?per_page=100`,
+    { headers }
+  );
+  return data.filter(repo => !repo.fork);
+}
+
+module.exports = { getProfile, getRepos };

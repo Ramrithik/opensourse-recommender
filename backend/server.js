@@ -1,19 +1,17 @@
-// server.js (backend/server.js)
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
-// 👇 change this line
-const githubRoutes = require("./routes/github");
+const githubRoutes = require('./routes/github');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/github", githubRoutes);
+// Routes
+app.use('/api/github', githubRoutes);
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
