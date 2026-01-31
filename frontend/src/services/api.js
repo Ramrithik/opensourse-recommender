@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://opensourse-recommender.onrender.com";
 
 export const fetchGitHubData = async (username, domain) => {
   if (!username) throw new Error("Username is required");
